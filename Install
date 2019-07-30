@@ -196,7 +196,6 @@ if [ ! -d $repo/.git ]; then
     git checkout ${repo_sha:-FETCH_HEAD}
     unset repo_sha
     unset repo repo_ref
-
 fi
 
 cd /opt/superdesk/server
