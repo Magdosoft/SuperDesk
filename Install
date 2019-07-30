@@ -198,13 +198,6 @@ if [ ! -d $repo/.git ]; then
     unset repo repo_ref
 fi
 
-cd /opt/superdesk/server
-time pip install Flask-PyMongo==0.5.2
-
-
-
-
-
 cd /opt/superdesk/client
 time npm install
 
