@@ -190,7 +190,7 @@ cd $repo
 if [ ! -d $repo/.git ]; then
     git init
     git remote add origin https://github.com/superdesk/superdesk.git
-    repo_ref=${repo_ref:-'heads/master'}
+    repo_ref=${repo_ref:-'heads/1.0'}
     repo_sha=
     git fetch origin $repo_ref:
     git checkout ${repo_sha:-FETCH_HEAD}
@@ -200,7 +200,6 @@ fi
 
 cd /opt/superdesk/server
 [ -f dev-requirements.txt ] && req=dev-requirements.txt || req=requirements.txt
-time pip install Flask-PyMongo==0.5.2
 time pip install -U -r $req
 
 cd /opt/superdesk/client
