@@ -185,7 +185,7 @@ _activate
 pip install -U pip wheel
 
 ## prepare source code
-path=~/superdesk
+path=/opt/superdesk
 git clone https://github.com/superdesk/superdesk.git $path
 cd $path/server
 pip3 install -r requirements.txt
