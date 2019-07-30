@@ -199,9 +199,9 @@ if [ ! -d $repo/.git ]; then
 fi
 
 cd /opt/superdesk/server
-[ -f dev-requirements.txt ] && req=dev-requirements.txt || req=requirements.txt
 time pip install Flask-PyMongo==0.5.2
-time pip install -U -r $req
+cat requirements.txt | sed -e '/^\s*#.*$/d' -e '/^\s*$/d' | xargs -n 1 pip install
+
 
 cd /opt/superdesk/client
 time npm install
