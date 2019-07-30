@@ -185,21 +185,10 @@ _activate
 pip install -U pip wheel
 
 ## prepare source code
-repo=${repo:-'/opt/superdesk'}
-[ -d $repo ] || mkdir $repo
-cd $repo
-if [ ! -d $repo/.git ]; then
-    git clone https://github.com/superdesk/superdesk.git $repo
-fi
-
-cd /opt/superdesk/server
-[ -f dev-requirements.txt ] && req=dev-requirements.txt || req=requirements.txt
-time pip install Flask-PyMongo==0.5.2
-time pip install -U -r $req
-
-cd /opt/superdesk/client
-time npm install
-
+path=~/superdesk
+git clone https://github.com/superdesk/superdesk.git $path
+cd $path/server
+pip3 install -r requirements.txt
 
 ### deploy
 cat <<"EOF" > /opt/superdesk/activate.sh
