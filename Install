@@ -201,7 +201,7 @@ fi
 cd /opt/superdesk/server
 time pip install Flask-PyMongo==0.5.2
 
-pip3 install -r requirements.txt
+
 
 
 
