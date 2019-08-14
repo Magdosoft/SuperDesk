@@ -334,6 +334,7 @@ from superdesk.io.feed_parsers.iptc7901 import IPTC7901FeedParser  # NOQA
 from superdesk.io.feed_parsers.newsml_1_2 import NewsMLOneFeedParser  # NOQA
 from superdesk.io.feed_parsers.newsml_2_0 import NewsMLTwoFeedParser  # NOQA
 from superdesk.io.feed_parsers.dpa_newsml_2_0 import DpaNewsMLTwoFeedParser  # NOQA
+from superdesk.io.feed_parsers.newsml_1_2_new import NewsMLOneFeedNewParser  # NOQA
 from superdesk.io.feed_parsers.nitf import NITFFeedParser  # NOQA
 from superdesk.io.feed_parsers.rfc822 import EMailRFC822FeedParser  # NOQA
 from superdesk.io.feed_parsers.wenn_parser import WENNFeedParser  # NOQA

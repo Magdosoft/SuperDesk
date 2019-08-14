@@ -1,0 +1,3 @@
+added : /opt/superdesk/env/src/superdesk-core/superdesk/io/feed_parsers/dpa_newsml_2_0.py
+Modified : /opt/superdesk/env/src/superdesk-core/superdesk/io/feed_parsers/__init__.py
+
