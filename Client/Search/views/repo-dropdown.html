@@ -1,0 +1,30 @@
+<div class="">
+
+
+<button ng-click="togglePredefinedDateFilter('firstcreated', 'last_24_hours')"
+        class="toggle-button"
+        ng-class="{'toggle-button--active': hasPredefinedDateFilter('firstcreated','last_24_hours')}" style="margin-left:5px">{{'Last 24 Hours' | translate}}</button>
+
+<button ng-click="togglePredefinedDateFilter('firstcreated', 'last_7_days')"
+        class="toggle-button"
+        ng-class="{'toggle-button--active': hasPredefinedDateFilter('firstcreated','last_7_days')}" style="margin-right:5px">{{'Last 7 Days' | translate}}</button>
+
+<button ng-click="togglePredefinedDateFilter('firstcreated', 'last_30_days')"
+        class="toggle-button"
+        ng-class="{'toggle-button--active': hasPredefinedDateFilter('firstcreated','last_30_days')}" style="margin-right:5px">{{'Last 30 Days' | translate}}</button>
+
+        <div class="form__row form__row--flex" ng-if="search_config.ingest_provider">
+            <div class="sd-line-input sd-line-input--is-select sd-line-input--boxed sd-line-input--no-margin">
+                <label class="sd-line-input__label" for="search-ingest-provider">
+                    {{:: 'Provider' | translate}}
+                </label>
+                <select id="search-ingest-provider"
+                        class="sd-line-input__select"
+                        ng-model='fields.ingest_provider'
+                        ng-options="provider._id as provider.name for provider in providers">
+                        <option value="" label=""></option>
+                </select>
+            </div>
+        </div>
+
+</div>
