@@ -9,6 +9,21 @@ sudo systemctl start superdesk
 sudo systemctl restart superdesk
 sudo systemctl status superdesk
 
+###important tools
+atom
+pycharm
+catfish
+nomachine
+robo3t or compass or nosqlbooster
+
+
+
+### stop /start mongodb
+sudo service mongod start
+sudo service mongod stop
+sudo service mongod restart
+sudo service mongod status
+
 
 ###Check for  server python modification errors
 ##change dir to 
@@ -20,11 +35,18 @@ sudo su
 cd Downloads/pycharm-community-xxxx.x.x/bin
 ./pycharm.sh
 
+### detect all os open ports
+nmap -p- localhost
+
 
 ### webpacking client after modification 
 ##change dir to 
 cd /opt/superdesk/client
 sudo grunt build
+
+### run client development server
+grunt server 
+-->> onpen in browser http://localhost:9000
 
 
 

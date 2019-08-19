@@ -1,3 +1,14 @@
 added : /opt/superdesk/env/src/superdesk-core/superdesk/io/feed_parsers/dpa_newsml_2_0.py
 Modified : /opt/superdesk/env/src/superdesk-core/superdesk/io/feed_parsers/__init__.py
 
+### change port for mongodb
+modified : /opt/superdesk/env/src/superdesk-core/superdesk/default_settings.py
+modified : /opt/superdesk/env/lib/python3.5/site-packages/eve/default_settings.py
+
+### modify search app
+/opt/superdesk/client/node_modules/superdesk-core/scripts/apps
+
+### path of mongodb
+/etc/mogod.conf
+
+
