@@ -15,7 +15,7 @@ pycharm
 catfish
 nomachine
 robo3t or compass or nosqlbooster
-
+gufw
 
 
 ### stop /start mongodb
