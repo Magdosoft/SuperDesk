@@ -1,0 +1,46 @@
+<div class="login-screen">
+    <div class="login-form-container">
+
+        <div class="logo-handler">
+            <img src="/images/WekalatLogo.png" width="290" alt="Ahram Logo">
+        </div>
+
+        <div class="form-handler">
+            <form name="xmppLoginForm" ng-submit="authenticateXMPP()">
+                <fieldset class="inputs">
+                    <input type="text" id="jid" ng-model="jid" placeholder="JID" class="fullwidth-input" required />
+                    <input type="hidden" id="transactionId" ng-model="transactionId" required />
+                </fieldset>
+                <p class="text" translate>Please check that the following id is the same as on your device:</p>
+                <p class="transition-id">{{transactionId}}</p>
+                <fieldset class="buttons">
+                    <button ng-disabled="isLoading" id="login-btn" type="submit" class="btn btn--sd-green">
+                        {{ 'Secure Log In' | translate }}
+                        <div class="spinner" ng-show="isLoading">
+                          <div class="dot1"></div>
+                          <div class="dot2"></div>
+                        </div>
+                    </button>
+                </fieldset>
+            </form>
+
+            <div class="error-handler" ng-switch on="loginError">
+                <p class="error" ng-switch-when="401" translate>Oops! Authentication has been denied.</p>
+                <p class="error" ng-switch-when="403" translate>Sorry, but your account has been suspended.</p>
+                <p class="error" ng-show="loginError" ng-switch-default translate>Sorry, but can't reach the server now.<br />Please try again later.</p>
+
+                <div class="network-error red" ng-show="serverStatus == 1">
+                    <span class="icon-unplug"></span>
+                    <p translate>No server response so far.<br />Let me try again.</p>
+                </div>
+
+                <div class="network-error yellow" ng-show="serverStatus > 1">
+                    <span class="icon-unplug"></span>
+                    <p translate>Trying to reconnect...<br />Please wait.</p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

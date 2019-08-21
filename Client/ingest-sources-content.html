@@ -1,0 +1,255 @@
+<div class="sd-page__flex-helper">
+    <div class="sd-page__header">
+        <div class="flat-searchbar" ng-class="{extended: queueSearch}">
+            <div class="search-handler" >
+                <label for="search-input" class="trigger-icon" ng-click="queueSearch = !queueSearch"><i class="icon-search"></i></label>
+                <input id="search-input" type="text" placeholder="{{ :: 'Search' | translate }}" ng-model="query" ng-model-options="{debounce: 500}" ng-change="search(query)">
+            </div>
+        </div>
+        <div class="dropdown" dropdown>
+            <button id="status_filter_button" class="dropdown__toggle navbtn navbtn--text-only" dropdown__toggle>
+                <span translate translate-params-filter="activeStatusFilter.label">Status: {{filter}}</span>
+                <span class="dropdown__caret"></span>
+            </button>
+            <ul class="dropdown__menu">
+                <li ng-repeat="filter in statusFilters track by filter.id" >
+                    <!-- dynamic id only for testing purpose --->
+                    <button ng-click="filterIngestSources(filter.id)" id="status--{{::filter.id}}-filter">{{filter.label | translate}}</button>
+                </li>
+            </ul>
+        </div>
+        <div class="sd-page__element-grow">
+            <div sd-pagination items="providers"></div>
+        </div>
+        <button class="btn btn--primary" ng-click="edit()">
+            <i class="icon-plus-sign icon--white"></i><span translate>Add New</span>
+        </button>
+    </div>
+
+    <div class="sd-page__content">
+        <ul class="sd-list-item-group sd-list-item-group--space-between-items" style="max-width: 1000px;">
+            <li class="sd-list-item sd-shadow--z1" ng-repeat="provider in providers._items">
+                <div class="sd-list-item__border"></div>
+                <div class="sd-list-item__column sd-list-item__column--grow sd-list-item__column--no-border">
+                    <div class="sd-list-item__row">
+                        <span class="sd-overflow-ellipsis sd-list-item--element-grow">
+                            {{ provider.name}}
+                            <span class="last-updated" ng-if="provider.last_updated">
+                                <span translate>Last updated</span> {{ provider.last_updated | reldate }}
+                            </span>
+                        </span>
+                        <span class="label label--hollow label--alert" ng-if="provider.is_closed" translate>closed</span>
+                    </div>
+                </div>
+                <div class="sd-list-item__action-menu sd-list-item__action-menu--direction-row">
+                    <button class="icn-btn" ng-click="gotoIngest(provider)" title="{{:: 'Go to items' | translate }}"><i class="icon-external"></i></button>
+                    <button class="icn-btn" ng-click="edit(provider)" title="{{:: 'Edit source' | translate }}"><i class="icon-pencil"></i></button>
+                    <button class="icn-btn" ng-click="remove(provider)" ng-show="!provider.last_item_update" title="{{:: 'Remove source' | translate }}"><i class="icon-trash"></i></button>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Modal -->
+<div sd-modal data-model="provider" class="modal--tabs modal--large">
+    <div class="modal__header modal__header--flex">
+        <h3 class="modal__heading" ng-show="provider._id"><span translate>Edit Source</span> "{{ provider.name}}"</h3>
+        <h3 class="modal__heading" translate ng-hide="provider._id" translate>Add New Source</h3>
+        <a href="" class="icn-btn close" ng-click="cancel()"><i class="icon-close-small"></i></a>
+    </div>
+
+    <div class="modal__body">
+        <form name="editForm" sd-wizard data-name="ingestSources" data-current-step="step.current" data-finish="cancel()">
+            <!-- XXX: The dummy text and password inputs below are here to avoid autocompletion in Firefox, as autocomplete="off" is not working
+                      and without it, superdesk login/password will be used as default /o\ (cf. SDESK-2745) -->
+            <input type="text" style="display:none">
+            <input type="password" style="display:none">
+
+            <fieldset>
+                <div sd-wizard-step data-title="{{ 'General' | translate }}" data-code="general">
+                    <div class="form__row form__row--l-padding">
+                        <span sd-switch-inverted ng-model="provider.is_closed"></span><label>{{ provider.is_closed ? 'Closed' : 'Active' | translate }}</label>
+                    </div>
+
+                    <div class="form__row form__row--s-padding">
+                        <div class="sd-line-input sd-line-input--boxed sd-line-input--required" ng-class="{'sd-line-input--invalid' : error._issues.name}">
+                            <label class="sd-line-input__label" for="provider-name" translate>Provider Name</label>
+                            <input class="sd-line-input__input" type="text" id="provider-name" ng-model="provider.name" required>
+                            <div class="input__message" ng-show="error._issues.name" translate>Name is not unique.</div>
+                        </div>
+                    </div>
+
+                    <div class="form__row form__row--s-padding">
+                        <div class="sd-line-input sd-line-input--required">
+                            <label class="sd-line-input__label" for="source-name" translate>Source Name</label>
+                            <input class="sd-line-input__input" type="text" id="source-name" ng-model="provider.source" required>
+                        </div>
+                    </div>
+
+                    <div class="form__row form__row--s-padding">
+                        <div class="sd-line-input sd-line-input--is-select sd-line-input--required"">
+                            <label class="sd-line-input__label" for="provider-feeding-service" translate>Feeding Service</label>
+                            <select class="sd-line-input__select" id="provider-feeding-service" ng-change="initProviderConfig()" required ng-model="provider.feeding_service" ng-options="fs.feeding_service as fs.label for fs in feedingServices"></select>
+                        </div>
+                    </div>
+
+                    <div class="form__row form__row--s-padding">
+                        <div class="sd-line-input sd-line-input--is-select" ng-show="feedParsers.length > 1">
+                            <label class="sd-line-input__label" for="provider-feed-parser" translate>Feed Parser</label>
+                            <select class="sd-line-input__select" id="provider-feed-parser" ng-model="provider.feed_parser" ng-options="fp.feed_parser as fp.label for fp in feedParsers">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form__row article-type" ng-show="provider.feeding_service !== 'wufoo'">
+                        <label class="form-label" for="provider-content-types" translate>Article Type(s)</label>
+                        <div class="button-list">
+                            <a  href=""
+                                ng-repeat="fileType in fileTypes"
+                                title="{{fileType.type}}"
+                                ng-click="addOrRemoveFileType(fileType.type, editForm)"
+                                class="toggle-button"
+                                ng-class="{'toggle-button--active': hasFileType(fileType.type)}">
+                                <i class="toggle-button__icon {{fileType.icon}}"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="form__row form__row--s-padding">
+                        <label class="form-label" for="schedule-minutes" translate>Update every</label>
+                        <div class="form__row form__row--flex">
+                            <div class="form__row-item form__row-item--no-grow">
+                                <div class="sd-line-input sd-line-input--is-select sd-line-input--no-label sd-line-input--no-margin">
+                                    <select id="schedule-minutes"
+                                            class="sd-line-input__select sd-line-input__select--mini"
+                                            ng-model="provider.update_schedule.minutes"
+                                            ng-options="min as min for min in minutes">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form__row-item form__row-item--no-grow">
+                                <span translate>min</span>
+                            </div>
+                            <div class="form__row-item form__row-item--no-grow">
+                                <div class="sd-line-input sd-line-input--is-select sd-line-input--no-label sd-line-input--no-margin">
+                                    <select class="sd-line-input__select sd-line-input__select--mini"
+                                            ng-model="provider.update_schedule.seconds"
+                                            ng-options="sec as sec for sec in seconds">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form__row-item form__row-item--no-grow">
+                                <span translate>sec</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form__row form__row--s-padding">
+                        <label class="form-label" for="idle-hours" translate>Notify when idle for more than</label>
+                        <div class="form__row form__row--flex">
+                            <div class="form__row-item form__row-item--no-grow">
+                                <div class="sd-line-input sd-line-input--is-select sd-line-input--no-label sd-line-input--no-margin">
+                                    <select id="idle-hours"
+                                            class="sd-line-input__select sd-line-input__select--mini"
+                                            ng-model="provider.idle_time.hours"
+                                            ng-options="hrs as hrs for hrs in hours">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form__row-item form__row-item--no-grow">
+                                <span translate>hrs</span>
+                            </div>
+                            <div class="form__row-item form__row-item--no-grow">
+                                <div class="sd-line-input sd-line-input--is-select sd-line-input--no-label sd-line-input--no-margin">
+                                    <select id="idle-minutes"
+                                            class="sd-line-input__select sd-line-input__select--mini"
+                                            ng-model="provider.idle_time.minutes"
+                                            ng-options="min as min for min in minutes">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form__row-item form__row-item--no-grow">
+                                <span translate>min</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form__row form__row--s-padding" sd-content-expiry
+                        data-item="provider"
+                        data-preview="false"
+                        data-expiryfield="content_expiry"
+                        data-header="Content Expiry"
+                        data-expiry-minutes="ingestExpiry"
+                        data-expiry-context="System">
+                    </div>
+
+                    <div class="form__row form__row--l-padding">
+                        <span sd-switch ng-model="provider.allow_remove_ingested"></span><label>{{:: 'Allow Remove Ingested Items' | translate }}</label>
+                    </div>
+
+                    <div class="form__row credentials">
+                        <div class="sd-alert sd-alert--hollow sd-alert--alert sd-alert--small" ng-show="error" translate>
+                            An error occured when testing config.
+                        </div>
+                        <div sd-ingest-provider-config></div>
+                    </div>
+
+                    <div class="form__row form__row--s-padding">
+                        <div class="sd-line-input sd-line-input--is-select">
+                            <label class="sd-line-input__label" for="ruleset" translate>Ruleset</label>
+                            <select class="sd-line-input__select" id="ruleset" ng-model="provider.rule_set" ng-options="r._id as r.name for r in rulesets">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form__row form__row--s-padding">
+                        <div class="sd-line-input sd-line-input--is-select">
+                            <label class="sd-line-input__label" for="routing" translate>Routing Scheme</label>
+                            <select class="sd-line-input__select" id="routing" ng-model="provider.routing_scheme" ng-options="rs._id as rs.name for rs in routingScheme">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div sd-wizard-step data-title="{{ 'Notification' | translate }}" data-code="notification">
+                    <ul class="simple-list simple-list--dotted">
+                        <div class="simple-list__item">
+                            <span sd-switch ng-model="provider.notifications.on_update"></span>
+                            <label>{{ :: 'Update' | translate}}</label>
+                        </div>
+                        <div class="simple-list__item">
+                            <span sd-switch ng-model="provider.notifications.on_close"></span>
+                            <label>{{ :: 'Close' | translate}}</label>
+                        </div>
+                        <div class="simple-list__item">
+                            <span sd-switch ng-model="provider.notifications.on_open"></span>
+                            <label>{{ :: 'Open' | translate}}</label>
+                        </div>
+                        <div class="simple-list__item">
+                            <span sd-switch ng-model="provider.notifications.on_error"></span>
+                            <label>{{ :: 'Error' | translate}}</label>
+                        </div>
+                    </ul>
+                </div>
+
+                <div sd-wizard-step data-title="{{ 'Critical Errors' | translate }}" data-code="critial-errors" ng-show="provider.feeding_service" ng-init="fetchSourceErrors()">
+                    <ul class="simple-list simple-list--dotted">
+                        <li class="simple-list__item" ng-repeat="(key, val) in provider.source_errors">
+                            <span sd-switch ng-model="provider.critical_errors[key]"></span>
+                            <label>{{key}}: {{val}}</label>
+                        </li>
+                    </ul>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="modal__footer">
+        <button class="btn" ng-click="cancel()" translate>Cancel</button>
+        <button class="btn btn--primary" ng-click="save()" ng-disabled="!editForm.$valid || !editForm.$dirty" translate>Save</button>
+    </div>
+</div>
+<!-- END Modal -->

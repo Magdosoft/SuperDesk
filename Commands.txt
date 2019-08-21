@@ -54,4 +54,19 @@ grunt server
 source /opt/superdesk/activate.sh
 cd /opt/superdesk/server
 ./manage.py users:create -u admin -p admin -e 'admin@example.com' --admin
-./manage.py users:create -u amac -p amac -e 'amac@example.com' --admin
+./manage.py users:create -u amac -p amac -e 'amac@example.com' --user
+
+
+###compaction all collection in MongoDb
+use testDbName;
+db.getCollectionNames().forEach(function (collectionName) {
+    print('Compacting: ' + collectionName);
+    db.runCommand({ compact: collectionName });
+});
+
+
+### repair mongoDb 
+db.repairDatabase()
+
+
+
