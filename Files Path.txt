@@ -28,6 +28,7 @@ modified : /opt/superdesk/env/lib/python3.5/site-packages/eve/default_settings.p
 /opt/superdesk/client/node_modules/superdesk-core/scripts/apps/archive/views/preview.html
 /opt/superdesk/client/node_modules/superdesk-core/scripts/apps/products/views/products-config-modal.html
 /opt/superdesk/client/node_modules/superdesk-core/scripts/apps/search/views/repo-dropdown.html
+/opt/superdesk/client/node_modules/superdesk-core/scripts/core/notification/notification.ts
 /opt/superdesk/client/node_modules/superdesk-core/scripts/core/auth/reset-password.html
 /opt/superdesk/client/node_modules/superdesk-core/scripts/apps/search/views/search-parametersTop.html
 /opt/superdesk/client/node_modules/superdesk-core/scripts/core/auth/secure-login.html
