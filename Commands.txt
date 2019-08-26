@@ -70,3 +70,6 @@ db.repairDatabase()
 
 
 
+### mongoDB backup and restore
+mongodump -d superdesk_ca -o /opt/backup/
+mongorestore /opt/superdesk/backup
