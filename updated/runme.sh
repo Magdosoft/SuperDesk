@@ -88,6 +88,11 @@ cp -rf ClientConfig/inner/superdesk.config.js /opt/superdesk/client/node_modules
 echo "ClientConfig.config.js inner  ...Copied"
 sleep 1 
 
+
+cp -rf notification.ts /opt/superdesk/client/node_modules/superdesk-core/scripts/core/notification/views/
+echo "notification.ts  ...Copied"
+
+
 echo "###restart superdesk server"
 cd /opt/superdesk/client/
 grunt build
