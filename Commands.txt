@@ -1,75 +1,35 @@
-###open files with root password
-gksu nautilus
+MongoDB can saturate all cores on a multi-core machine for read operations, but for write operations and map-reduce MongoDB can only utilize a single core per mongod process.
+mongodb single threaded
+
+
+MongoDB can saturate all cores on a multi-core machine for read operations, but for write operations and map-reduce MongoDB can only utilize a single core per mongod process.
+
+The limitation for single-core MapReduce is due to the Javascript interpreter that MongoDB utilizes. This is something that is supposed to be fixed in the future but in the interim you can use Hadoop to execute the MapReduce and store the result set in your MongoDB database.
+
+Another option which has seen mixed results is to run a single mongod process for every core on the instance this will not increase performance for a single database unless they are configured to run in a sharded setup.
 
 
 
-###stop /restart superdesk 
-sudo systemctl stop superdesk
-sudo systemctl start superdesk
-sudo systemctl restart superdesk
-sudo systemctl status superdesk
+Using fast writes
+Never set MongoDB for high-speed writes with low durability. This ‘file-and-forget’ mode makes writes appear to be fast because your command returns before actually writing anything. If the system crashes before the data is written to disk, it is lost and risks being in an inconsistent state. Fortunately, 64-bit MongoDB has journaling enabled.
 
-###important tools
-atom
-pycharm
-catfish
-nomachine
-robo3t or compass or nosqlbooster
-gufw
+The MMAPv1 and WiredTiger storage engine both use journaling to prevent this, though WiredTiger can be restored to the last consistent checkpoint during recovery if journaling is switched off.
 
+Journaling will ensure that the database is in a consistent state when it recovers and will save all the data up to the point that the journal is written. The duration between journal writes is configurable using the commitIntervalMs run-time option.
 
-### stop /start mongodb
-sudo service mongod start
-sudo service mongod stop
-sudo service mongod restart
-sudo service mongod status
-
-
-###Check for  server python modification errors
-##change dir to 
-cd /opt/superdesk/server
-gunicorn superdesk
-
-###pycharm installation after download 
-sudo su
-cd Downloads/pycharm-community-xxxx.x.x/bin
-./pycharm.sh
-
-### detect all os open ports
-nmap -p- localhost
-
-
-### webpacking client after modification 
-##change dir to 
-cd /opt/superdesk/client
-sudo grunt build
-
-### run client development server
-grunt server 
--->> onpen in browser http://localhost:9000
+To be confident of your writes, make sure that journaling is enabled (storage.journal.enabled) in the configuration file and the commit interval corresponds with what you can afford to lose.
 
 
 
-###Create Users
-source /opt/superdesk/activate.sh
-cd /opt/superdesk/server
-./manage.py users:create -u admin -p admin -e 'admin@example.com' --admin
-./manage.py users:create -u amac -p amac -e 'amac@example.com' --user
+
+https://dzone.com/articles/how-speed-mongodb-mapreduce
 
 
-###compaction all collection in MongoDb
-use testDbName;
-db.getCollectionNames().forEach(function (collectionName) {
-    print('Compacting: ' + collectionName);
-    db.runCommand({ compact: collectionName });
-});
+https://github.com/mongodb/mongo-hadoop/wiki/Configuration-Reference
 
 
-### repair mongoDb 
-db.repairDatabase()
+make default stack size lower on linux
 
 
-
-### mongoDB backup and restore
-mongodump -d superdesk_ca -o /opt/backup/
-mongorestore /opt/superdesk/backup
+sudo grep mongod /var/log/messages
+sudo grep score /var/log/messages

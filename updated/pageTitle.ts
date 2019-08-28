@@ -13,7 +13,7 @@
  */
 export default angular.module('superdesk.core.services.pageTitle', [])
     .service('pageTitle', function() {
-        this.title = 'Amac';
+        this.title = 'Ahram';
         this.url = '';
         this.workspace = '';
 

@@ -80,6 +80,9 @@ sleep 1
 cp -rf server/__init__.py /opt/superdesk/env/src/superdesk-core/superdesk/io/feed_parsers/
 echo "__init__.py  ...Copied"
 sleep 1 
+cp -rf server/default_settings.py.py /opt/superdesk/env/src/superdesk-core/superdesk/
+echo "default_settings.py  ...Copied"
+sleep 1 
 
 cp -rf ClientConfig/superdesk.config.js /opt/superdesk/client/
 echo "ClientConfig.config.js root  ...Copied"
