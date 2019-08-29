@@ -101,6 +101,7 @@ server_url = urlparse(SERVER_URL)
 SERVER_DOMAIN = server_url.netloc or 'localhost'
 URL_PREFIX = env('URL_PREFIX', server_url.path.lstrip('/')) or ''
 
+
 VALIDATION_ERROR_STATUS = 400
 JSON_SORT_KEYS = False
 
@@ -453,7 +454,10 @@ VERSION = '_current_version'
 
 #: uses for generation of media url ``(<media_prefix>/<media_id>)``::
 
-MEDIA_PREFIX = env('MEDIA_PREFIX', '/api/upload-raw')
+#MEDIA_PREFIX = env('MEDIA_PREFIX', '/api/upload-raw')
+SERVER_DOMAIN = '10.2.233.43'
+photo_prefix = 'http://%s/api' % SERVER_DOMAIN
+MEDIA_PREFIX = env('MEDIA_PREFIX', '%s/upload-raw' % photo_prefix.rstrip('/'))
 MEDIA_PREFIXES_TO_FIX = None
 
 #: amazon access key
