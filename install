@@ -300,7 +300,7 @@ unset sample_data
 
 [ -z "${grunt_build-1}" ] || (
 cd /opt/superdesk/client
-time grunt build --webpack-no-progress
+time grunt build --webpack-no-progress --ws=ws://10.2.233.53/ws
 )
 
 # Use latest honcho with --no-colour option
@@ -311,7 +311,7 @@ cat <<EOF > /opt/superdesk/server/Procfile
 logs: journalctl -u superdesk* -f >> /var/log/superdesk/main.log
 rest: gunicorn -b 0.0.0.0:5000 wsgi $gunicorn_opts
 wamp: python3 -u ws.py
-work: celery -A worker worker -c 1
+work: celery -A worker worker -c 2
 beat: celery -A worker beat --pid=
 capi: gunicorn -b 0.0.0.0:5400 content_api.wsgi $gunicorn_opts
 EOF
