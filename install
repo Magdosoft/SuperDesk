@@ -300,7 +300,7 @@ unset sample_data
 
 [ -z "${grunt_build-1}" ] || (
 cd /opt/superdesk/client
-time grunt build --webpack-no-progress --ws=ws://10.2.233.53/ws
+time grunt build --webpack-no-progress --ws=ws://10.2.233.23/ws
 )
 
 # Use latest honcho with --no-colour option
