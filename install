@@ -224,9 +224,9 @@ PATH=/opt/superdesk/client/node_modules/.bin/:$PATH
 
 [ ! -f /opt/superdesk/env.sh ] || . /opt/superdesk/env.sh
 
-HOST=${HOST:-'10.2.233.56'}
+HOST=${HOST:-'localhost'}
 HOST_SSL=${HOST_SSL:-}
-DB_HOST=${DB_HOST:-'10.2.233.56'}
+DB_HOST=${DB_HOST:-'localhost'}
 DB_NAME=${DB_NAME:-'superdesk'}
 
 [ -n "${HOST_SSL:-}" ] && SSL='s' || SSL=''
@@ -300,7 +300,7 @@ unset sample_data
 
 [ -z "${grunt_build-1}" ] || (
 cd /opt/superdesk/client
-time grunt build --webpack-no-progress --ws=ws://$HOST/ws
+time grunt build --webpack-no-progress
 )
 
 # Use latest honcho with --no-colour option
