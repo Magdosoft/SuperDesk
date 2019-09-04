@@ -311,7 +311,7 @@ cat <<EOF > /opt/superdesk/server/Procfile
 logs: journalctl -u superdesk* -f >> /var/log/superdesk/main.log
 rest: gunicorn -b 0.0.0.0:5000 wsgi $gunicorn_opts
 wamp: python3 -u ws.py
-work: celery -A worker worker -c 2
+work: celery -A worker worker -c 4
 beat: celery -A worker beat --pid=
 capi: gunicorn -b 0.0.0.0:5400 content_api.wsgi $gunicorn_opts
 EOF
