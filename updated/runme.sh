@@ -1,5 +1,9 @@
 #!/bin/bash  
 
+
+echo "###restart superdesk server"
+sudo systemctl stop superdesk
+
 echo "###Update client"
 cp -rf Search/directives/index.ts /opt/superdesk/client/node_modules/superdesk-core/scripts/apps/search/directives/
 echo "index.ts  ...Copied"
@@ -80,9 +84,6 @@ sleep 1
 cp -rf server/__init__.py /opt/superdesk/env/src/superdesk-core/superdesk/io/feed_parsers/
 echo "__init__.py  ...Copied"
 sleep 1 
-cp -rf server/default_settings.py.py /opt/superdesk/env/src/superdesk-core/superdesk/
-echo "default_settings.py  ...Copied"
-sleep 1 
 
 cp -rf ClientConfig/superdesk.config.js /opt/superdesk/client/
 echo "ClientConfig.config.js root  ...Copied"
@@ -92,14 +93,14 @@ echo "ClientConfig.config.js inner  ...Copied"
 sleep 1 
 
 
-cp -rf notification.ts /opt/superdesk/client/node_modules/superdesk-core/scripts/core/notification/views/
+cp -rf notification.ts /opt/superdesk/client/node_modules/superdesk-core/scripts/core/notification/
 echo "notification.ts  ...Copied"
 
 
 echo "###restart superdesk server"
 cd /opt/superdesk/client/
-grunt build
+grunt build --ws=ws://10.2.233.23/ws
 
 echo "###restart superdesk server"
-sudo systemctl restart superdesk
+sudo systemctl start superdesk
 

@@ -137,7 +137,7 @@ function NotifyConnectionService($rootScope, notify, $timeout, session) {
     $rootScope.$on('disconnected', (event) => {
         self.message = gettext('Disconnected from Notification Server!');
         $rootScope.$applyAsync(() => {
-            //notify.warning(self.message);
+            notify.warning(self.message);
         });
     });
 
