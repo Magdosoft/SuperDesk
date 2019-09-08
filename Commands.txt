@@ -71,5 +71,8 @@ db.getCollectionNames().forEach(function (collectionName) {
 ### repair mongoDb 
 db.repairDatabase()
 
+## Restore MongoDB From Dumb Files
+mongorestore <Directory of Dumb Folder>
+
 
 
