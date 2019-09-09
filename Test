@@ -224,7 +224,7 @@ PATH=/opt/superdesk/client/node_modules/.bin/:$PATH
 
 [ ! -f /opt/superdesk/env.sh ] || . /opt/superdesk/env.sh
 
-HOST=${HOST:-'localhost'}
+HOST=${HOST:-'10.2.233.78'}
 HOST_SSL=${HOST_SSL:-}
 DB_HOST=${DB_HOST:-'localhost'}
 DB_NAME=${DB_NAME:-'superdesk'}
