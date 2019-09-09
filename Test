@@ -181,8 +181,8 @@ LC_ALL=en_US.UTF-8
 
 # some settings required by client
 PATH=/opt/superdesk/client/node_modules/.bin/:$PATH
-SUPERDESK_URL='http://localhost/api'
-SUPERDESK_WS_URL='ws://localhost/ws'
+SUPERDESK_URL='http://10.2.233.78/api'
+SUPERDESK_WS_URL='ws://10.2.233.78/ws'
 set +a
 EOF
 
