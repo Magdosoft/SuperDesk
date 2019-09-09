@@ -79,7 +79,7 @@ wait_elastic() {
     elastic=0
     while [ $elastic -eq 0 ]
     do
-        curl -s "http://10.2.233.77:9200" 2>&1 > /dev/null \
+        curl -s "http://localhost:9200" 2>&1 > /dev/null \
             && elastic=1 \
             || echo "waiting for elastic..."
         sleep .5
@@ -120,7 +120,7 @@ systemctl enable elasticsearch
 systemctl restart elasticsearch
 wait_elastic
 
-curl -s -XPUT 'http://10.2.233.77:9200/_snapshot/backups' \
+curl -s -XPUT 'http://localhost:9200/_snapshot/backups' \
     -d '{"type": "fs", "settings": {"location": "'$es_backups'"}}'
 unset cfg es_backups
 
@@ -181,8 +181,8 @@ LC_ALL=en_US.UTF-8
 
 # some settings required by client
 PATH=/opt/superdesk/client/node_modules/.bin/:$PATH
-SUPERDESK_URL='http://10.2.233.77/api'
-SUPERDESK_WS_URL='ws://10.2.233.77/ws'
+SUPERDESK_URL='http://localhost/api'
+SUPERDESK_WS_URL='ws://localhost/ws'
 set +a
 EOF
 
@@ -224,9 +224,9 @@ PATH=/opt/superdesk/client/node_modules/.bin/:$PATH
 
 [ ! -f /opt/superdesk/env.sh ] || . /opt/superdesk/env.sh
 
-HOST=${HOST:-'10.2.233.77'}
+HOST=${HOST:-'localhost'}
 HOST_SSL=${HOST_SSL:-}
-DB_HOST=${DB_HOST:-'10.2.233.77'}
+DB_HOST=${DB_HOST:-'localhost'}
 DB_NAME=${DB_NAME:-'superdesk'}
 
 [ -n "${HOST_SSL:-}" ] && SSL='s' || SSL=''
@@ -311,7 +311,7 @@ cat <<EOF > /opt/superdesk/server/Procfile
 logs: journalctl -u superdesk* -f >> /var/log/superdesk/main.log
 rest: gunicorn -b 0.0.0.0:5000 wsgi $gunicorn_opts
 wamp: python3 -u ws.py
-work: celery -A worker worker -c 2
+work: celery -A worker worker -c 4
 beat: celery -A worker beat --pid=
 capi: gunicorn -b 0.0.0.0:5400 content_api.wsgi $gunicorn_opts
 EOF
@@ -355,7 +355,7 @@ server {
 EOF
 cat <<EOF > $path/default.inc
 location /ws {
-    proxy_pass http://10.2.233.77:5100;
+    proxy_pass http://localhost:5100;
     proxy_http_version 1.1;
     proxy_buffering off;
     proxy_read_timeout 3600;
@@ -364,17 +364,17 @@ location /ws {
 }
 
 location /api {
-    proxy_pass http://10.2.233.77:5000;
+    proxy_pass http://localhost:5000;
     proxy_set_header Host $HOST;
     expires epoch;
 
     sub_filter_once off;
     sub_filter_types application/json;
-    sub_filter 'http://10.2.233.77' 'http://\$host';
+    sub_filter 'http://localhost' 'http://\$host';
 }
 
 location /contentapi {
-    proxy_pass http://10.2.233.77:5400;
+    proxy_pass http://localhost:5400;
     proxy_set_header Host $HOST;
     expires epoch;
 }
@@ -388,8 +388,8 @@ location / {
     # TODO: use "config.js:server" for user installations
     sub_filter_once off;
     sub_filter_types application/javascript;
-    sub_filter 'http://10.2.233.77' 'http://\$host';
-    sub_filter 'ws://10.2.233.77/ws' 'ws://\$host/ws';
+    sub_filter 'http://localhost' 'http://\$host';
+    sub_filter 'ws://localhost/ws' 'ws://\$host/ws';
 }
 EOF
 cat <<"EOF" > $path/params.conf
@@ -517,7 +517,7 @@ Wants=network.target
 After=network.target
 
 [Service]
-ExecStart=/bin/sh -c '. /opt/superdesk/env/bin/activate && exec python3 $smtp_py 10.2.233.77 25 $mails'
+ExecStart=/bin/sh -c '. /opt/superdesk/env/bin/activate && exec python3 $smtp_py localhost 25 $mails'
 WorkingDirectory=/opt/superdesk
 Restart=always
 
