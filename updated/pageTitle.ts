@@ -28,7 +28,7 @@ export default angular.module('superdesk.core.services.pageTitle', [])
         };
 
         function setTitle(url, activeWorkspace) {
-            document.title = 'Amac' + (url ? ' - ' + url : '') + (activeWorkspace ? ' - ' + activeWorkspace : '');
+            document.title = 'Ahram' + (url ? ' - ' + url : '') + (activeWorkspace ? ' - ' + activeWorkspace : '');
         }
 
         this.clear = function() {

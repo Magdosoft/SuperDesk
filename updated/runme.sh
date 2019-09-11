@@ -1,6 +1,5 @@
 #!/bin/bash  
 
-
 echo "###restart superdesk server"
 sudo systemctl stop superdesk
 
@@ -85,6 +84,10 @@ cp -rf server/__init__.py /opt/superdesk/env/src/superdesk-core/superdesk/io/fee
 echo "__init__.py  ...Copied"
 sleep 1 
 
+cp -rf server/http_service.py /opt/superdesk/env/src/superdesk-core/apps/io/feeding_services/
+echo "http_service.py  ...Copied"
+sleep 1 
+
 cp -rf ClientConfig/superdesk.config.js /opt/superdesk/client/
 echo "ClientConfig.config.js root  ...Copied"
 sleep 1 
@@ -92,14 +95,25 @@ cp -rf ClientConfig/inner/superdesk.config.js /opt/superdesk/client/node_modules
 echo "ClientConfig.config.js inner  ...Copied"
 sleep 1 
 
+cp -rf archive-preview.scss /opt/superdesk/client/node_modules/superdesk-core/styles/sass/
+echo "archive-preview.scss  ...Copied"
+sleep 1 
 
-cp -rf notification.ts /opt/superdesk/client/node_modules/superdesk-core/scripts/core/notification/
-echo "notification.ts  ...Copied"
+
+cp -rf default_settings.py /opt/superdesk/env/src/superdesk-core/superdesk/
+echo "default_settings.py  ...Copied"
+sleep 1 
+
+
+cp -rf index.html.js /opt/superdesk/client/node_modules/superdesk-core/
+echo "index.html.js  ...Copied"
+sleep 1 
 
 
 echo "###restart superdesk server"
 cd /opt/superdesk/client/
-grunt build --ws=ws://10.2.233.23/ws
+sudo grunt clean
+grunt build
 
 echo "###restart superdesk server"
 sudo systemctl start superdesk
