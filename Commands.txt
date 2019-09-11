@@ -57,7 +57,7 @@ grunt server
 source /opt/superdesk/activate.sh
 cd /opt/superdesk/server
 ./manage.py users:create -u admin -p admin -e 'admin@example.com' --admin
-./manage.py users:create -u amac -p amac -e 'amac@example.com' --user
+./manage.py users:create -u amac -p amac -e 'amac@example.com' --admin
 
 
 ###compaction all collection in MongoDb
