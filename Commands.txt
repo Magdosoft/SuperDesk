@@ -74,5 +74,6 @@ db.repairDatabase()
 ## Restore MongoDB From Dumb Files
 mongorestore <Directory of Dumb Folder>
 
-
+### open the pycharm without configuration errors after installation form the "ubuntu software"
+sudo pycharm-community
 

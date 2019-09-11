@@ -181,8 +181,8 @@ LC_ALL=en_US.UTF-8
 
 # some settings required by client
 PATH=/opt/superdesk/client/node_modules/.bin/:$PATH
-SUPERDESK_URL='http://localhost/api'
-SUPERDESK_WS_URL='ws://localhost/ws'
+SUPERDESK_URL='http://10.2.233.32/api'
+SUPERDESK_WS_URL='ws://10.2.233.32/ws'
 set +a
 EOF
 
@@ -224,7 +224,7 @@ PATH=/opt/superdesk/client/node_modules/.bin/:$PATH
 
 [ ! -f /opt/superdesk/env.sh ] || . /opt/superdesk/env.sh
 
-HOST=${HOST:-'localhost'}
+HOST=${HOST:-'10.2.233.32'}
 HOST_SSL=${HOST_SSL:-}
 DB_HOST=${DB_HOST:-'localhost'}
 DB_NAME=${DB_NAME:-'superdesk'}
@@ -358,6 +358,7 @@ location /ws {
     proxy_pass http://localhost:5100;
     proxy_http_version 1.1;
     proxy_buffering off;
+
     proxy_read_timeout 3600;
     proxy_set_header Upgrade \$http_upgrade;
     proxy_set_header Connection "Upgrade";
