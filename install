@@ -358,8 +358,7 @@ location /ws {
     proxy_pass http://localhost:5100;
     proxy_http_version 1.1;
     proxy_buffering off;
-    client_max_body_size 100m;
-    client_header_buffer_size 1m;
+
     proxy_read_timeout 3600;
     proxy_set_header Upgrade \$http_upgrade;
     proxy_set_header Connection "Upgrade";
@@ -369,8 +368,7 @@ location /api {
     proxy_pass http://localhost:5000;
     proxy_set_header Host $HOST;
     expires epoch;
-    client_max_body_size 100m;
-    client_header_buffer_size 1m;
+
     sub_filter_once off;
     sub_filter_types application/json;
     sub_filter 'http://localhost' 'http://\$host';
@@ -379,8 +377,6 @@ location /api {
 location /contentapi {
     proxy_pass http://localhost:5400;
     proxy_set_header Host $HOST;
-    client_max_body_size 100m;
-    client_header_buffer_size 1m;
     expires epoch;
 }
 
