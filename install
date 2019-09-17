@@ -181,8 +181,8 @@ LC_ALL=en_US.UTF-8
 
 # some settings required by client
 PATH=/opt/superdesk/client/node_modules/.bin/:$PATH
-SUPERDESK_URL='http://10.2.233.29/api'
-SUPERDESK_WS_URL='ws://10.2.233.29/ws'
+SUPERDESK_URL='http://10.2.233.28/api'
+SUPERDESK_WS_URL='ws://10.2.233.28/ws'
 set +a
 EOF
 
@@ -224,7 +224,7 @@ PATH=/opt/superdesk/client/node_modules/.bin/:$PATH
 
 [ ! -f /opt/superdesk/env.sh ] || . /opt/superdesk/env.sh
 
-HOST=${HOST:-'10.2.233.29'}
+HOST=${HOST:-'10.2.233.28'}
 HOST_SSL=${HOST_SSL:-}
 DB_HOST=${DB_HOST:-'localhost'}
 DB_NAME=${DB_NAME:-'superdesk'}
@@ -311,7 +311,7 @@ cat <<EOF > /opt/superdesk/server/Procfile
 logs: journalctl -u superdesk* -f >> /var/log/superdesk/main.log
 rest: gunicorn -b 0.0.0.0:5000 wsgi $gunicorn_opts
 wamp: python3 -u ws.py
-work: celery -A worker worker -c 4
+work: celery -A worker worker -c 16
 beat: celery -A worker beat --pid=
 capi: gunicorn -b 0.0.0.0:5400 content_api.wsgi $gunicorn_opts
 EOF
