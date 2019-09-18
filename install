@@ -67,7 +67,7 @@ systemLog:
 
 net:
   port: 27017
-  bindIp: 0.0.0.0
+  bindIp: 127.0.0.1
 EOF
 unset cfg
 systemctl enable mongod
@@ -109,7 +109,7 @@ if [ ! -d "$es_backups" ]; then
     chown elasticsearch:elasticsearch $es_backups
 fi
 cat <<EOF > $cfg
-network.bind_host: 0.0.0.0
+network.bind_host: 127.0.0.1
 node.local: true
 discovery.zen.ping.multicast: false
 path.repo: $es_backups
@@ -157,7 +157,7 @@ libxmlsec1-dev
 
 # node & npm
 if ! _skip_install nodejs; then
-    curl -sL https://deb.nodesource.com/setup_7.x | bash -
+    curl -sL https://deb.nodesource.com/setup_12.x | bash -
     apt-get install -y nodejs
 
     npm install -g grunt-cli
@@ -181,8 +181,8 @@ LC_ALL=en_US.UTF-8
 
 # some settings required by client
 PATH=/opt/superdesk/client/node_modules/.bin/:$PATH
-SUPERDESK_URL='http://10.2.233.28/api'
-SUPERDESK_WS_URL='ws://10.2.233.28/ws'
+SUPERDESK_URL='http://10.2.233.22/api'
+SUPERDESK_WS_URL='ws://10.2.233.22/ws'
 set +a
 EOF
 
@@ -224,7 +224,7 @@ PATH=/opt/superdesk/client/node_modules/.bin/:$PATH
 
 [ ! -f /opt/superdesk/env.sh ] || . /opt/superdesk/env.sh
 
-HOST=${HOST:-'10.2.233.28'}
+HOST=${HOST:-'10.2.233.22'}
 HOST_SSL=${HOST_SSL:-}
 DB_HOST=${DB_HOST:-'localhost'}
 DB_NAME=${DB_NAME:-'superdesk'}
