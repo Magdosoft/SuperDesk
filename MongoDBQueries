@@ -10,9 +10,10 @@ db.getCollection('ingest').aggregate([
             }
         }
         ,
-    { 
-         
-      $count: "$unique_id"
-    
-    }
+    { "$group": {
+        "_id": 1,
+        "themin": { "$min": "$unique_id" },
+        "themax": {"$max": "$unique_id"}
+        
+    }}
 ])
