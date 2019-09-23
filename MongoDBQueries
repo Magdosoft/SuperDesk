@@ -17,3 +17,44 @@ db.getCollection('ingest').aggregate([
         
     }}
 ])
+
+
+# to Delete Image files from and before a certain day (remember to change the date)
+# delete more than one day at a time most probaly fails 
+# deleting a day takes about (8-20) minutes and saves (7-20) Gigabytes
+print ("Started at : " + new Date());
+
+db.getCollection("fs.files").find( { 
+        "uploadDate" : {
+            "$lt" : ISODate("2019-08-26T22:00:00.000+0000")
+        }
+    }).forEach(function(file) { 
+
+
+
+        print(file._id); 
+
+         db.getCollection("fs.files").deleteOne(
+            { 
+                "_id" : file._id
+            });
+
+        db.getCollection("fs.chunks").deleteMany(
+            { 
+                "files_id" : file._id
+            });  
+
+});
+
+print ("Finished at : " + new Date());
+
+# Compact command for collections to restore the saved storage on desk after deleting days
+# It took about 45 minutes for 11 days deleted compacting
+print ("Started at : " + new Date());
+
+db.getCollectionNames().forEach(function (collectionName) {
+    print('Compacting: ' + collectionName);
+    db.runCommand({ compact: collectionName });
+});
+
+print ("Finished at : " + new Date());
