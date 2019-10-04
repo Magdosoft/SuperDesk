@@ -48,6 +48,25 @@ db.getCollection("fs.files").find( {
 
 print ("Finished at : " + new Date());
 
+# Delete from the ingest table from and before a certain date 
+
+print ("Started at : " + new Date());
+
+db.getCollection("ingest").deleteMany({ 
+        "firstcreated" : {
+            "$lt" : ISODate("2019-09-24T22:00:00.000+0000")
+        }
+    })
+
+print ("Finished at : " + new Date());
+
+# Reindex "fs.chunk" collection
+print ("Started at : " + new Date());
+
+db.getCollection("fs.chunks").reIndex()
+
+print ("Finished at : " + new Date());
+
 # Compact command for collections to restore the saved storage on desk after deleting days
 # It took about 45 minutes for 11 days deleted compacting
 print ("Started at : " + new Date());
