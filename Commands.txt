@@ -77,3 +77,14 @@ mongorestore <Directory of Dumb Folder>
 ### open the pycharm without configuration errors after installation form the "ubuntu software"
 sudo pycharm-community
 
+
+##Login to Ubuntu server from windows by a command line
+######################################################
+-Run a command line as Administrator
+-Write : ssh newsadmin@10.2.210.23
+-Choose (yes).
+-Write Password.
+-to reboot ubuntu system try this command:
+sudo reboot now
+-----------------------------------------
+
