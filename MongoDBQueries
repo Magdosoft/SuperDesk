@@ -77,3 +77,10 @@ db.getCollectionNames().forEach(function (collectionName) {
 });
 
 print ("Finished at : " + new Date());
+
+
+#########################################
+#change Robo 3t  Timeout
+Options--> Change Shell Timeout
+Type "50000"
+######################################
