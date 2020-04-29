@@ -1,3 +1,0 @@
-
-cd webapi && source venv/bin/activate && python mongo.py
-
