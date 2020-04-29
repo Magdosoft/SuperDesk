@@ -1,4 +1,0 @@
-sudo apt-get install cifs-utils
-sudo gedit /etc/fstab
-//10.2.135.34/NewsmlG2/Photo /home/amac/NewsmlG2/Photo cifs rw,user,username=dream,password=DreamX,iocharset=utf8,uid=1000,gid=1000,_netdev,vers=2.0  0 0
-//10.2.135.34/NewsmlG2/Arabic-General-Text /home/amac/NewsmlG2/ArabicGeneralText cifs rw,user,username=dream,password=DreamX,iocharset=utf8,uid=1000,gid=1000,_netdev,vers=2.0  0 0
